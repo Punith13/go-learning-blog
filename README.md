@@ -1,63 +1,43 @@
-# Astro Starter Kit: Blog
+# Go Journey
+
+A static daily Go learning journal for experienced TypeScript/Node.js developers. Built with **Astro 7**, Markdown, and Vercel. The curriculum develops one job-processing service across lessons.
+
+## Run locally
+
+Requires Node.js 22.23.4+ (or newer).
 
 ```sh
-npm create astro@latest -- --template blog
+npm ci
+npm run dev
+npm run build
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Visit http://localhost:4321. The index is at `/`, the searchable curriculum at `/blog/`, and lessons at `/blog/day-001/` and onward.
 
-Features:
+## Add a lesson
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and Open Graph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+Add `src/content/blog/day-NNN.md` with these frontmatter fields:
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-├── public/
-├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+```yaml
+---
+title: "Day 7 — An HTTP handler"
+description: "A one-sentence summary"
+pubDate: "2026-11-28"
+---
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+The index, homepage and previous/next navigation automatically pick up files whose name matches `day-NNN`.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Keep each lesson roughly 20–30 minutes, including a focused explanation, runnable or starter code, an exercise, acceptance criteria, a hint, and a stretch goal. Don't claim exercises were completed without evidence.
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+## Deployment
 
-Any static assets, like images, can be placed in the `public/` directory.
+Vercel is connected to GitHub. Merging to `main` triggers production deployment; a pull request can receive a preview.
 
-## 🧞 Commands
+## Automation plan (not enabled yet)
 
-All commands are run from the root of the project, from a terminal:
+The daily content generator needs a model provider and a safe publishing policy. Proposed workflow: scheduled GitHub Action -> read curriculum and feedback -> generate Markdown -> validate code in a temporary Go module -> open a PR -> merge after review -> Vercel deploys.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Do **not** add an unattended scheduled generator until provider credentials, cost limits, validation and GitHub write permissions are configured. Local Ollama requires a reachable self-hosted runner; hosted models require an API integration. GitHub Actions cannot directly read private ChatGPT conversation history, so progress must be recorded in the repository or an explicitly connected data source.
 
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+The included `site-check.yml` runs the static build for PRs and pushes. It does not run an AI agent.
